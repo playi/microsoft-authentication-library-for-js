@@ -377,6 +377,8 @@ export class UserAgentApplication {
     2. saves value in cache
     3. redirect user to AAD
      */
+    const joined_scopes = scopes.join(" ").toLowerCase(); // DEBUG ONLY DO NOT SHIP
+    console.log(`loginPopup scopes: ${joined_scopes}`); // DEBUG ONLY DO NOT SHIP
     return new Promise<string>((resolve, reject) => {
       if (this._loginInProgress) {
         reject(ErrorCodes.loginProgressError + ":" + ErrorDescription.loginProgressError);
