@@ -427,7 +427,11 @@ export class UserAgentApplication {
         this._loginInProgress = true;
         if (popUpWindow) {
             this._logger.infoPii("Navigated Popup window to:" + urlNavigate);
-            popUpWindow.location.href = urlNavigate;
+            if (popUpWindow["navigate"]) {
+              popUpWindow["navigate"](urlNavigate);
+            } else {
+              popUpWindow.location.href = urlNavigate;
+            }
         }
 
       }, () => {
@@ -546,6 +550,10 @@ export class UserAgentApplication {
    * @hidden
    */
   private openPopup(urlNavigate: string, title: string, popUpWidth: number, popUpHeight: number) {
+    console.log(`DEBUG: openPopup to ${urlNavigate}`); // DEBUG ONLY DO NOT SHIP
+    var webview = window["openMsWebview"](urlNavigate); // DEBUG ONLY DO NOT SHIP
+    // window.location.href = urlNavigate; // DEBUG ONLY DO NOT SHIP
+    if (webview) return webview; // DEBUG ONLY DO NOT SHIP
     try {
       /*
        * adding winLeft and winTop to account for dual monitor
