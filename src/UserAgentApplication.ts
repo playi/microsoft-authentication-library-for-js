@@ -377,8 +377,6 @@ export class UserAgentApplication {
     2. saves value in cache
     3. redirect user to AAD
      */
-    const joined_scopes = scopes.join(" ").toLowerCase(); // DEBUG ONLY DO NOT SHIP
-    console.log(`loginPopup scopes: ${joined_scopes}`); // DEBUG ONLY DO NOT SHIP
     return new Promise<string>((resolve, reject) => {
       if (this._loginInProgress) {
         reject(ErrorCodes.loginProgressError + ":" + ErrorDescription.loginProgressError);
@@ -427,7 +425,7 @@ export class UserAgentApplication {
         this._loginInProgress = true;
         if (popUpWindow) {
             this._logger.infoPii("Navigated Popup window to:" + urlNavigate);
-            if (popUpWindow["navigate"]) {
+            if (popUpWindow["navigate"]) { // Use navigate() method if popup is an x-ms-webview (ANA-2135)
               popUpWindow["navigate"](urlNavigate);
             } else {
               popUpWindow.location.href = urlNavigate;
@@ -550,10 +548,10 @@ export class UserAgentApplication {
    * @hidden
    */
   private openPopup(urlNavigate: string, title: string, popUpWidth: number, popUpHeight: number) {
-    console.log(`DEBUG: openPopup to ${urlNavigate}`); // DEBUG ONLY DO NOT SHIP
-    var webview = window["openMsWebview"](urlNavigate); // DEBUG ONLY DO NOT SHIP
-    // window.location.href = urlNavigate; // DEBUG ONLY DO NOT SHIP
-    if (webview) return webview; // DEBUG ONLY DO NOT SHIP
+    if (window["openMsWebview"]) {
+      var webview = window["openMsWebview"](urlNavigate); // Open popup as an x-ms-webview if available (ANA-2135)
+      if (webview) return webview;
+    }
     try {
       /*
        * adding winLeft and winTop to account for dual monitor

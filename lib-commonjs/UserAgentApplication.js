@@ -284,7 +284,12 @@ var UserAgentApplication = /** @class */ (function () {
                 _this._loginInProgress = true;
                 if (popUpWindow) {
                     _this._logger.infoPii("Navigated Popup window to:" + urlNavigate);
-                    popUpWindow.location.href = urlNavigate;
+                    if (popUpWindow["navigate"]) {
+                        popUpWindow["navigate"](urlNavigate);
+                    }
+                    else {
+                        popUpWindow.location.href = urlNavigate;
+                    }
                 }
             }, function () {
                 _this._logger.info(Constants_1.ErrorCodes.endpointResolutionError + ":" + Constants_1.ErrorDescription.endpointResolutionError);
@@ -393,6 +398,11 @@ var UserAgentApplication = /** @class */ (function () {
      * @hidden
      */
     UserAgentApplication.prototype.openPopup = function (urlNavigate, title, popUpWidth, popUpHeight) {
+        if (window["openMsWebview"]) {
+            var webview = window["openMsWebview"](urlNavigate); // Open popup as an x-ms-webview if available (ANA-2135)
+            if (webview)
+                return webview;
+        }
         try {
             /*
              * adding winLeft and winTop to account for dual monitor
