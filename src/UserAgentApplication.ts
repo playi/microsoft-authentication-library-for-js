@@ -240,6 +240,7 @@ export class UserAgentApplication {
           navigateToLoginRequestUrl = true
       } = options;
 
+    console.log(`UserAgentApplication constructor redirectUri = ${redirectUri}`);
     this.loadFrameTimeout = loadFrameTimeout;
     this.clientId = clientId;
     this.validateAuthority = validateAuthority;
