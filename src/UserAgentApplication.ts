@@ -280,6 +280,7 @@ export class UserAgentApplication {
   }
 
   public getRedirectUri(): string {
+    console.log(`getRedirectUri called.  this._redirectUri ${this._redirectUri}`);
     return this._redirectUri; 
   }
 
