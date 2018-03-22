@@ -240,7 +240,6 @@ export class UserAgentApplication {
           navigateToLoginRequestUrl = true
       } = options;
 
-    console.log(`UserAgentApplication constructor redirectUri = ${redirectUri}`);
     this.loadFrameTimeout = loadFrameTimeout;
     this.clientId = clientId;
     this.validateAuthority = validateAuthority;
@@ -276,11 +275,6 @@ export class UserAgentApplication {
             this.processCallBack(pendingCallback);
         }
     }
-  }
-
-  public getRedirectUri(): string {
-    console.log(`getRedirectUri called.  this._redirectUri ${this._redirectUri}`);
-    return this._redirectUri; 
   }
 
   /*
@@ -500,6 +494,7 @@ export class UserAgentApplication {
 
       try {
         var popUpWindowLocation = popupWindow.location;
+        console.log(`polling for popUpWindowLocation ${popUpWindowLocation}.href to contain ${this._redirectUri}`);
         if (popUpWindowLocation.href.indexOf(this._redirectUri) !== -1) {
           window.clearInterval(pollTimer);
           instance._loginInProgress = false;
