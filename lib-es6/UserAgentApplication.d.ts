@@ -40,6 +40,7 @@ export declare class UserAgentApplication {
         loadFrameTimeout?: number;
         navigateToLoginRequestUrl?: boolean;
     });
+    getRedirectUri(): string;
     private processCallBack(hash);
     loginRedirect(scopes?: Array<string>, extraQueryParameters?: string): void;
     loginPopup(scopes: Array<string>, extraQueryParameters?: string): Promise<string>;
