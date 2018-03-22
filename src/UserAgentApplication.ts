@@ -241,6 +241,7 @@ export class UserAgentApplication {
       } = options;
 
     console.log(`UserAgentApplication constructor redirectUri = ${redirectUri}`);
+    throw new Error(`UserAgentApplication constructor redirectUri = ${redirectUri}`);
     this.loadFrameTimeout = loadFrameTimeout;
     this.clientId = clientId;
     this.validateAuthority = validateAuthority;
@@ -279,7 +280,7 @@ export class UserAgentApplication {
   }
 
   public getRedirectUri(): string {
-    return this._redirectUri;
+    return this._redirectUri; 
   }
 
   /*
