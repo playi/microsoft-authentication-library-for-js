@@ -405,10 +405,12 @@ export class UserAgentApplication {
       }
 
       this.authorityInstance.ResolveEndpointsAsync().then(() => {
+        this._logger.verbose(`authorityInstance.ResolveEndpointsAsync completed`);
         const authenticationRequest = new AuthenticationRequestParameters(this.authorityInstance, this.clientId, scopes, ResponseTypes.id_token, this._redirectUri);
         if (extraQueryParameters) {
           authenticationRequest.extraQueryParameters = extraQueryParameters;
         }
+        window["authenticationRequest"] = authenticationRequest; // ANA-2135 DEBUG ONLY DO NOT SHIP
 
         this._cacheStorage.setItem(Constants.loginRequest, window.location.href);
         this._cacheStorage.setItem(Constants.loginError, "");
@@ -497,7 +499,7 @@ export class UserAgentApplication {
 
       try {
         var popUpWindowLocation = popupWindow.location ? popupWindow.location.href : popupWindow.src;
-        console.log(`polling for popUpWindowLocation ${popUpWindowLocation} to contain ${this._redirectUri}`);
+        // console.log(`polling for popUpWindowLocation ${popUpWindowLocation} to contain ${this._redirectUri}`);
         if (popUpWindowLocation.indexOf(this._redirectUri) !== -1) {
           window.clearInterval(pollTimer);
           instance._loginInProgress = false;
