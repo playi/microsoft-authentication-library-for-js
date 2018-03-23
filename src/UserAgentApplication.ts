@@ -239,7 +239,6 @@ export class UserAgentApplication {
           loadFrameTimeout = 6000,
           navigateToLoginRequestUrl = true
       } = options;
-    console.log(`UserAgentApplication options are ${JSON.stringify(options)}`);
 
     this.loadFrameTimeout = loadFrameTimeout;
     this.clientId = clientId;
@@ -267,6 +266,10 @@ export class UserAgentApplication {
     var urlHash = window.location.hash;
     var isCallback = this.isCallback(urlHash);
     
+    this._logger.verbose(`UserAgentApplication options are ${JSON.stringify(options)}`);
+    this._logger.verbose(`urlHash is ${urlHash}`);
+    this._logger.verbose(`isCallback is ${isCallback}`);
+
     if (isCallback) {
         this.handleAuthenticationResponse.call(this, urlHash);
     }
