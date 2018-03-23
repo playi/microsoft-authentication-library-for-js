@@ -239,6 +239,7 @@ export class UserAgentApplication {
           loadFrameTimeout = 6000,
           navigateToLoginRequestUrl = true
       } = options;
+    console.log(`UserAgentApplication options are ${JSON.stringify(options)}`);
 
     this.loadFrameTimeout = loadFrameTimeout;
     this.clientId = clientId;
