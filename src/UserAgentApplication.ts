@@ -378,6 +378,7 @@ export class UserAgentApplication {
     2. saves value in cache
     3. redirect user to AAD
      */
+    this._logger.verbose("loginPopup for scopes:" + scopes);
     return new Promise<string>((resolve, reject) => {
       if (this._loginInProgress) {
         reject(ErrorCodes.loginProgressError + ":" + ErrorDescription.loginProgressError);
@@ -469,6 +470,7 @@ export class UserAgentApplication {
    * @ignore
    */
   private openWindow(urlNavigate: string, title: string, interval: number, instance: this, resolve?: Function, reject?: Function): Window {
+    this._logger.verbose(`openWindow to ${urlNavigate} with title ${title}`);
     var popupWindow = this.openPopup(urlNavigate, title, Constants.popUpWidth, Constants.popUpHeight);
     if (popupWindow == null) {
       instance._loginInProgress = false;
@@ -494,9 +496,9 @@ export class UserAgentApplication {
       }
 
       try {
-        var popUpWindowLocation = popupWindow.location;
-        // console.log(`polling for popUpWindowLocation ${popUpWindowLocation}.href to contain ${this._redirectUri}`);
-        if (popUpWindowLocation.href.indexOf(this._redirectUri) !== -1) {
+        var popUpWindowLocation = popupWindow.location ? popupWindow.location.href : popupWindow.src;
+        console.log(`polling for popUpWindowLocation ${popUpWindowLocation} to contain ${this._redirectUri}`);
+        if (popUpWindowLocation.indexOf(this._redirectUri) !== -1) {
           window.clearInterval(pollTimer);
           instance._loginInProgress = false;
           instance._acquireTokenInProgress = false;

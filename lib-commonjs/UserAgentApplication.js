@@ -243,6 +243,7 @@ var UserAgentApplication = /** @class */ (function () {
         2. saves value in cache
         3. redirect user to AAD
          */
+        this._logger.verbose("loginPopup for scopes:" + scopes);
         return new Promise(function (resolve, reject) {
             if (_this._loginInProgress) {
                 reject(Constants_1.ErrorCodes.loginProgressError + ":" + Constants_1.ErrorDescription.loginProgressError);
@@ -327,6 +328,7 @@ var UserAgentApplication = /** @class */ (function () {
      */
     UserAgentApplication.prototype.openWindow = function (urlNavigate, title, interval, instance, resolve, reject) {
         var _this = this;
+        this._logger.verbose("openWindow to " + urlNavigate + " with title " + title);
         var popupWindow = this.openPopup(urlNavigate, title, Constants_1.Constants.popUpWidth, Constants_1.Constants.popUpHeight);
         if (popupWindow == null) {
             instance._loginInProgress = false;
@@ -350,9 +352,9 @@ var UserAgentApplication = /** @class */ (function () {
                 window.clearInterval(pollTimer);
             }
             try {
-                var popUpWindowLocation = popupWindow.location;
-                // console.log(`polling for popUpWindowLocation ${popUpWindowLocation}.href to contain ${this._redirectUri}`);
-                if (popUpWindowLocation.href.indexOf(_this._redirectUri) !== -1) {
+                var popUpWindowLocation = popupWindow.location ? popupWindow.location.href : popupWindow.src;
+                console.log("polling for popUpWindowLocation " + popUpWindowLocation + " to contain " + _this._redirectUri);
+                if (popUpWindowLocation.indexOf(_this._redirectUri) !== -1) {
                     window.clearInterval(pollTimer);
                     instance._loginInProgress = false;
                     instance._acquireTokenInProgress = false;
