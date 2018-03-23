@@ -351,7 +351,7 @@ var UserAgentApplication = /** @class */ (function () {
             }
             try {
                 var popUpWindowLocation = popupWindow.location;
-                console.log("polling for popUpWindowLocation " + popUpWindowLocation + ".href to contain " + _this._redirectUri);
+                // console.log(`polling for popUpWindowLocation ${popUpWindowLocation}.href to contain ${this._redirectUri}`);
                 if (popUpWindowLocation.href.indexOf(_this._redirectUri) !== -1) {
                     window.clearInterval(pollTimer);
                     instance._loginInProgress = false;
