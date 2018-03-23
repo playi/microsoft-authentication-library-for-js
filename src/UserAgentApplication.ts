@@ -502,11 +502,12 @@ export class UserAgentApplication {
 
       try {
         var popUpWindowLocation = popupWindow.location ? popupWindow.location.href : popupWindow.src;
-        // console.log(`polling for popUpWindowLocation ${popUpWindowLocation} to contain ${this._redirectUri}`);
         if (popUpWindowLocation.indexOf(this._redirectUri) !== -1) {
           window.clearInterval(pollTimer);
           instance._loginInProgress = false;
           instance._acquireTokenInProgress = false;
+          this._logger.verbose(`popupWindowLocation is ${popUpWindowLocation}`);
+          this._logger.verbose(`_redirectUri is ${this._redirectUri}`);
           this._logger.info("Closing popup window");
         }
       } catch (e) {

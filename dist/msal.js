@@ -1988,11 +1988,12 @@ var UserAgentApplication = /** @class */ (function () {
             }
             try {
                 var popUpWindowLocation = popupWindow.location ? popupWindow.location.href : popupWindow.src;
-                // console.log(`polling for popUpWindowLocation ${popUpWindowLocation} to contain ${this._redirectUri}`);
                 if (popUpWindowLocation.indexOf(_this._redirectUri) !== -1) {
                     window.clearInterval(pollTimer);
                     instance._loginInProgress = false;
                     instance._acquireTokenInProgress = false;
+                    _this._logger.verbose("popupWindowLocation is " + popUpWindowLocation);
+                    _this._logger.verbose("_redirectUri is " + _this._redirectUri);
                     _this._logger.info("Closing popup window");
                 }
             }
