@@ -1072,6 +1072,7 @@ var UserAgentApplication = /** @class */ (function () {
      * @hidden
      */
     UserAgentApplication.prototype.handleAuthenticationResponse = function (hash) {
+        this._logger.verbose("handleAuthenticationResponse with hash " + hash);
         if (hash == null) {
             hash = window.location.hash;
         }

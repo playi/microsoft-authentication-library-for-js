@@ -1310,6 +1310,7 @@ export class UserAgentApplication {
    * @hidden
    */
   private handleAuthenticationResponse(hash: string): void {
+    this._logger.verbose(`handleAuthenticationResponse with hash ${hash}`);
     if (hash == null) {
       hash = window.location.hash;
     }
