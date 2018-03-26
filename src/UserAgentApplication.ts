@@ -1358,7 +1358,7 @@ export class UserAgentApplication {
             self._cacheStorage.setItem(Constants.urlHash, hash);
             saveToken = false;
             if (window.parent === window && !isPopup) {
-              self._logger.verbose("DBG D");
+              self._logger.verbose("DBG D:" + self._cacheStorage.getItem(Constants.loginRequest));
               window.location.href = self._cacheStorage.getItem(Constants.loginRequest);
             }
             return;
