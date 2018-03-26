@@ -192,6 +192,7 @@ var UserAgentApplication = /** @class */ (function () {
         2. saves value in cache
         3. redirect user to AAD
          */
+        this._logger.verbose("loginRedirect, this._tokenReceivedCallback:" + this._tokenReceivedCallback); // DEBUG ONLY DO NOT SHIP
         if (this._loginInProgress) {
             if (this._tokenReceivedCallback) {
                 this._tokenReceivedCallback("Login is in progress", null, null, Constants.idToken);
@@ -200,6 +201,7 @@ var UserAgentApplication = /** @class */ (function () {
         }
         if (scopes) {
             var isValidScope = this.validateInputScope(scopes);
+            this._logger.verbose("loginRedirect scopes:" + scopes + ", isValidScope:" + isValidScope); // DEBUG ONLY DO NOT SHIP
             if (isValidScope && !Utils.isEmpty(isValidScope)) {
                 if (this._tokenReceivedCallback) {
                     this._tokenReceivedCallback(isValidScope, null, null, Constants.idToken);
@@ -1099,10 +1101,6 @@ var UserAgentApplication = /** @class */ (function () {
         var requestInfo = self.getRequestInfo(hash);
         var token = null, tokenReceivedCallback = null, tokenType, saveToken = true;
         self._logger.info("Returned from redirect url");
-        self._logger.verbose("window.opener: " + window.opener);
-        self._logger.verbose("window.opener.msal: " + window.opener.msal);
-        self._logger.verbose("requestInfo.stateResponse: " + requestInfo.stateResponse);
-        self._logger.verbose("window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]: " + window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]);
         if (window.parent !== window && window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]) {
             self._logger.verbose("DBG A");
             tokenReceivedCallback = window.parent.callBackMappedToRenewStates[requestInfo.stateResponse];
