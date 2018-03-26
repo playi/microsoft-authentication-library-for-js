@@ -1344,32 +1344,39 @@ export class UserAgentApplication {
     self._logger.info("Returned from redirect url");
     
     if (window.parent !== window && window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]) {
+        self._logger.verbose("DBG A");
         tokenReceivedCallback = window.parent.callBackMappedToRenewStates[requestInfo.stateResponse];
     }
     else if (window.opener && window.opener.msal && window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]) {
-        tokenReceivedCallback = window.opener.callBackMappedToRenewStates[requestInfo.stateResponse];
+      self._logger.verbose("DBG B");
+      tokenReceivedCallback = window.opener.callBackMappedToRenewStates[requestInfo.stateResponse];
     }
     else {
         if (self._navigateToLoginRequestUrl) {
-            tokenReceivedCallback = null;
+          self._logger.verbose("DBG C");
+          tokenReceivedCallback = null;
             self._cacheStorage.setItem(Constants.urlHash, hash);
             saveToken = false;
             if (window.parent === window && !isPopup) {
-                window.location.href = self._cacheStorage.getItem(Constants.loginRequest);
+              self._logger.verbose("DBG D");
+              window.location.href = self._cacheStorage.getItem(Constants.loginRequest);
             }
             return;
         }
         else {
+          self._logger.verbose("DBG E");
             tokenReceivedCallback = self._tokenReceivedCallback;
             window.location.hash = '';
         }
-
+        self._logger.verbose("DBG F");
     }
+    self._logger.verbose("DBG G");
 
     self.saveTokenFromHash(requestInfo);
 
     if ((requestInfo.requestType === Constants.renewToken) && window.parent) {
-        if (window.parent!==window) {
+      self._logger.verbose("DBG H");
+      if (window.parent!==window) {
             self._logger.verbose("Window is in iframe, acquiring token silently");
         } else {
             self._logger.verbose("acquiring token interactive in progress");
@@ -1378,7 +1385,8 @@ export class UserAgentApplication {
     token = requestInfo.parameters[Constants.accessToken] || requestInfo.parameters[Constants.idToken];
     tokenType = Constants.accessToken;
     } else if (requestInfo.requestType === Constants.login) {
-    token = requestInfo.parameters[Constants.idToken];
+      self._logger.verbose("DBG I");
+      token = requestInfo.parameters[Constants.idToken];
     tokenType = Constants.idToken;
     }
 
@@ -1387,16 +1395,19 @@ export class UserAgentApplication {
   
     try {
         if (tokenReceivedCallback) {
-            tokenReceivedCallback.call(self, errorDesc, token, error, tokenType);
+          self._logger.verbose("DBG J");
+          tokenReceivedCallback.call(self, errorDesc, token, error, tokenType);
         }
 
     } catch (err) {
         self._logger.error("Error occurred in token received callback function: " + err);
     }
     
+    self._logger.verbose("DBG K");
     for (var i = 0; i < self._openedWindows.length; i++) {
         self._openedWindows[i].close();
     }
+    self._logger.verbose("DBG L");
 
   }
 

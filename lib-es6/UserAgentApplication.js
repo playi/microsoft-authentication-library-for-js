@@ -1098,28 +1098,36 @@ var UserAgentApplication = /** @class */ (function () {
         var token = null, tokenReceivedCallback = null, tokenType, saveToken = true;
         self._logger.info("Returned from redirect url");
         if (window.parent !== window && window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]) {
+            self._logger.verbose("DBG A");
             tokenReceivedCallback = window.parent.callBackMappedToRenewStates[requestInfo.stateResponse];
         }
         else if (window.opener && window.opener.msal && window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]) {
+            self._logger.verbose("DBG B");
             tokenReceivedCallback = window.opener.callBackMappedToRenewStates[requestInfo.stateResponse];
         }
         else {
             if (self._navigateToLoginRequestUrl) {
+                self._logger.verbose("DBG C");
                 tokenReceivedCallback = null;
                 self._cacheStorage.setItem(Constants.urlHash, hash);
                 saveToken = false;
                 if (window.parent === window && !isPopup) {
+                    self._logger.verbose("DBG D");
                     window.location.href = self._cacheStorage.getItem(Constants.loginRequest);
                 }
                 return;
             }
             else {
+                self._logger.verbose("DBG E");
                 tokenReceivedCallback = self._tokenReceivedCallback;
                 window.location.hash = '';
             }
+            self._logger.verbose("DBG F");
         }
+        self._logger.verbose("DBG G");
         self.saveTokenFromHash(requestInfo);
         if ((requestInfo.requestType === Constants.renewToken) && window.parent) {
+            self._logger.verbose("DBG H");
             if (window.parent !== window) {
                 self._logger.verbose("Window is in iframe, acquiring token silently");
             }
@@ -1130,6 +1138,7 @@ var UserAgentApplication = /** @class */ (function () {
             tokenType = Constants.accessToken;
         }
         else if (requestInfo.requestType === Constants.login) {
+            self._logger.verbose("DBG I");
             token = requestInfo.parameters[Constants.idToken];
             tokenType = Constants.idToken;
         }
@@ -1137,15 +1146,18 @@ var UserAgentApplication = /** @class */ (function () {
         var error = requestInfo.parameters[Constants.error];
         try {
             if (tokenReceivedCallback) {
+                self._logger.verbose("DBG J");
                 tokenReceivedCallback.call(self, errorDesc, token, error, tokenType);
             }
         }
         catch (err) {
             self._logger.error("Error occurred in token received callback function: " + err);
         }
+        self._logger.verbose("DBG K");
         for (var i = 0; i < self._openedWindows.length; i++) {
             self._openedWindows[i].close();
         }
+        self._logger.verbose("DBG L");
     };
     /*
      * This method must be called for processing the response received from AAD. It extracts the hash, processes the token or error, saves it in the cache and calls the registered callbacks with the result.
