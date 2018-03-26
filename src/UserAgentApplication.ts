@@ -350,6 +350,9 @@ export class UserAgentApplication {
         if (extraQueryParameters) {
           authenticationRequest.extraQueryParameters = extraQueryParameters;
         }
+        this._logger.verbose("ResolveEndpointsAsync"); // ANA-2135 DEBUG ONLY DO NOT SHIP
+        window["authenticationRequest"] = authenticationRequest; // ANA-2135 DEBUG ONLY DO NOT SHIP
+
 
         this._cacheStorage.setItem(Constants.loginRequest, window.location.href);
         this._cacheStorage.setItem(Constants.loginError, "");
@@ -1342,6 +1345,10 @@ export class UserAgentApplication {
     let token: string = null, tokenReceivedCallback: (errorDesc: string, token: string, error: string, tokenType: string) => void = null, tokenType: string, saveToken:boolean = true;
     
     self._logger.info("Returned from redirect url");
+    self._logger.verbose(`window.opener: ${window.opener}`);
+    self._logger.verbose(`window.opener.msal: ${window.opener.msal}`);
+    self._logger.verbose(`requestInfo.stateResponse: ${requestInfo.stateResponse}`);
+    self._logger.verbose(`window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]: ${window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]}`);
     
     if (window.parent !== window && window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]) {
         self._logger.verbose("DBG A");

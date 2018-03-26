@@ -214,6 +214,8 @@ var UserAgentApplication = /** @class */ (function () {
             if (extraQueryParameters) {
                 authenticationRequest.extraQueryParameters = extraQueryParameters;
             }
+            _this._logger.verbose("ResolveEndpointsAsync"); // ANA-2135 DEBUG ONLY DO NOT SHIP
+            window["authenticationRequest"] = authenticationRequest; // ANA-2135 DEBUG ONLY DO NOT SHIP
             _this._cacheStorage.setItem(Constants.loginRequest, window.location.href);
             _this._cacheStorage.setItem(Constants.loginError, "");
             _this._cacheStorage.setItem(Constants.stateLogin, authenticationRequest.state);
@@ -1097,6 +1099,10 @@ var UserAgentApplication = /** @class */ (function () {
         var requestInfo = self.getRequestInfo(hash);
         var token = null, tokenReceivedCallback = null, tokenType, saveToken = true;
         self._logger.info("Returned from redirect url");
+        self._logger.verbose("window.opener: " + window.opener);
+        self._logger.verbose("window.opener.msal: " + window.opener.msal);
+        self._logger.verbose("requestInfo.stateResponse: " + requestInfo.stateResponse);
+        self._logger.verbose("window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]: " + window.opener.callBackMappedToRenewStates[requestInfo.stateResponse]);
         if (window.parent !== window && window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]) {
             self._logger.verbose("DBG A");
             tokenReceivedCallback = window.parent.callBackMappedToRenewStates[requestInfo.stateResponse];
