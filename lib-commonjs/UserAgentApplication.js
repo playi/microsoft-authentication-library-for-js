@@ -1103,6 +1103,13 @@ var UserAgentApplication = /** @class */ (function () {
         var requestInfo = self.getRequestInfo(hash);
         var token = null, tokenReceivedCallback = null, tokenType, saveToken = true;
         self._logger.info("Returned from redirect url");
+        // DBG ONLY DO NOT SHIP
+        self._logger.verbose("window.parent: " + window.parent);
+        self._logger.verbose("requestInfo.stateResponse: " + requestInfo.stateResponse);
+        if (window.parent) {
+            self._logger.verbose("window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]: " + window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]);
+        }
+        // DBG ONLY DO NOT SHIP
         if (window.parent !== window && window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]) {
             self._logger.verbose("DBG A");
             tokenReceivedCallback = window.parent.callBackMappedToRenewStates[requestInfo.stateResponse];

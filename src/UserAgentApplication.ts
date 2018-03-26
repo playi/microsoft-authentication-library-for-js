@@ -1347,6 +1347,14 @@ export class UserAgentApplication {
     let token: string = null, tokenReceivedCallback: (errorDesc: string, token: string, error: string, tokenType: string) => void = null, tokenType: string, saveToken:boolean = true;
     
     self._logger.info("Returned from redirect url");
+
+    // DBG ONLY DO NOT SHIP
+    self._logger.verbose(`window.parent: ${window.parent}`);
+    self._logger.verbose(`requestInfo.stateResponse: ${requestInfo.stateResponse}`);
+    if (window.parent) {
+      self._logger.verbose(`window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]: ${window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]}`);
+    }
+    // DBG ONLY DO NOT SHIP
     
     if (window.parent !== window && window.parent.callBackMappedToRenewStates[requestInfo.stateResponse]) {
         self._logger.verbose("DBG A");
