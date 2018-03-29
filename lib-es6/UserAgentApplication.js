@@ -97,6 +97,7 @@ var UserAgentApplication = /** @class */ (function () {
         this._activeRenewals = {};
         this._cacheLocation = cacheLocation;
         this._navigateToLoginRequestUrl = navigateToLoginRequestUrl;
+        console.log("UserAgentApplication created with navigateToLoginRequestUrl=" + this._navigateToLoginRequestUrl);
         if (!this._cacheLocations[cacheLocation]) {
             throw new Error("Cache Location is not valid. Provided value:" + this._cacheLocation + ".Possible values are: " + this._cacheLocations.localStorage + ", " + this._cacheLocations.sessionStorage);
         }
