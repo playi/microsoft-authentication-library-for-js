@@ -1071,9 +1071,11 @@ export class UserAgentApplication {
    */
   @resolveTokenOnlyIfOutOfIframe
   acquireTokenSilent(scopes: Array<string>, authority?: string, user?: User, extraQueryParameters?: string): Promise<string> {
+    console.log(`acquireTokenSilent with scopes ${scopes}`);
     return new Promise<string>((resolve, reject) => {
       const isValidScope = this.validateInputScope(scopes);
       if (isValidScope && !Utils.isEmpty(isValidScope)) {
+        console.warn(`acquireTokenSilent rejecting with isValidScope:${isValidScope}`);
         reject(ErrorCodes.inputScopesError + ":" + isValidScope);
       } else {
         if (scopes) {
@@ -1083,6 +1085,7 @@ export class UserAgentApplication {
         const scope = scopes.join(" ").toLowerCase();
         const userObject = user ? user : this.getUser();
         if (!userObject) {
+          console.warn(`acquireTokenSilent rejecting with userObject:${userObject}`);
           reject(ErrorCodes.userLoginError + ":" + ErrorDescription.userLoginError);
           return;
         }
@@ -1109,6 +1112,7 @@ export class UserAgentApplication {
           }
           else if (cacheResult.errorDesc || cacheResult.error) {
             this._logger.infoPii(cacheResult.errorDesc + ":" + cacheResult.error);
+            console.warn(`acquireTokenSilent rejecting with cacheResult.errorDesc:${cacheResult.errorDesc}`);
             reject(cacheResult.errorDesc + ": " + cacheResult.error);
             return;
           }

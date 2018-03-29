@@ -849,9 +849,11 @@ var UserAgentApplication = /** @class */ (function () {
      */
     UserAgentApplication.prototype.acquireTokenSilent = function (scopes, authority, user, extraQueryParameters) {
         var _this = this;
+        console.log("acquireTokenSilent with scopes " + scopes);
         return new Promise(function (resolve, reject) {
             var isValidScope = _this.validateInputScope(scopes);
             if (isValidScope && !Utils_1.Utils.isEmpty(isValidScope)) {
+                console.warn("acquireTokenSilent rejecting with isValidScope:" + isValidScope);
                 reject(Constants_1.ErrorCodes.inputScopesError + ":" + isValidScope);
             }
             else {
@@ -861,6 +863,7 @@ var UserAgentApplication = /** @class */ (function () {
                 var scope_1 = scopes.join(" ").toLowerCase();
                 var userObject_1 = user ? user : _this.getUser();
                 if (!userObject_1) {
+                    console.warn("acquireTokenSilent rejecting with userObject:" + userObject_1);
                     reject(Constants_1.ErrorCodes.userLoginError + ":" + Constants_1.ErrorDescription.userLoginError);
                     return;
                 }
@@ -886,6 +889,7 @@ var UserAgentApplication = /** @class */ (function () {
                     }
                     else if (cacheResult.errorDesc || cacheResult.error) {
                         _this._logger.infoPii(cacheResult.errorDesc + ":" + cacheResult.error);
+                        console.warn("acquireTokenSilent rejecting with cacheResult.errorDesc:" + cacheResult.errorDesc);
                         reject(cacheResult.errorDesc + ": " + cacheResult.error);
                         return;
                     }
